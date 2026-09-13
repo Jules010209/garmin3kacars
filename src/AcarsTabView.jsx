@@ -970,7 +970,7 @@ class AcarsMessagePage extends GtcView {
       try {
         const lat = SimVar.GetSimVarValue("PLANE LATITUDE", "degrees");
         const lon = SimVar.GetSimVarValue("PLANE LONGITUDE", "degrees");
-        
+
         const results =
           await this.props.fms.facLoader.findNearestFacilitiesByIdent(
             FacilitySearchType.AllExceptVisual,
@@ -1012,7 +1012,7 @@ class AcarsMessagePage extends GtcView {
       this.bus.getPublisher().pub(
         "cas_deactivate_alert",
         {
-          key: { uuid: "acars-msg" },
+          key: { uuid: "cpdlc-msg" },
           priority: AnnunciationType.Advisory,
         },
         true,
@@ -1032,7 +1032,7 @@ class AcarsMessagePage extends GtcView {
         this.bus.getPublisher().pub(
           "cas_deactivate_alert",
           {
-            key: { uuid: "acars-msg" },
+            key: { uuid: message.cpdlc ? "cpdlc-msg" : "acars-msg" },
             priority: AnnunciationType.Advisory,
           },
           true,
@@ -2281,9 +2281,36 @@ class AcarsTabView extends GtcView {
           },
           {
             name: "Type",
-            options: [["VATATIS", "ATIS"], ["METAR"], ["TAF"]],
+            options: [["METAR"], ["TAF"]],
             validate: (v) => true,
-            initialValue: ["VATATIS", "ATIS"],
+            initialValue: ["METAR"],
+          },
+        ],
+      },
+      {
+        title: "Atis Request",
+        onSend: async (d) => {
+          const client = this.client.get();
+          if (!client) return false;
+          return client.atisRequest(d["Facility"], "ATIS", d["Type"]);
+        },
+        fields: [
+          {
+            name: "Facility",
+            allowSpaces: false,
+            maxLength: 4,
+            type: GtcViewKeys.TextDialog,
+            displayFallback: "----",
+            validate: (v) => v.length === 4,
+          },
+          {
+            name: "Type",
+            options: [
+              ["D", "Departure"],
+              ["A", "Arrival"],
+            ],
+            validate: (v) => true,
+            initialValue: ["D", "Departure"],
           },
         ],
       },
@@ -2448,7 +2475,7 @@ class AcarsTabView extends GtcView {
     this.bus.getPublisher().pub(
       "cas_activate_alert",
       {
-        key: { uuid: "acars-msg" },
+        key: { uuid: message.cpdlc ? "cpdlc-msg" : "acars-msg" },
         priority: AnnunciationType.Advisory,
       },
       true,
@@ -2480,6 +2507,10 @@ class AcarsTabView extends GtcView {
     manager.register({
       uuid: "acars-msg",
       message: "DATALINK MESSAGE",
+    });
+    manager.register({
+      uuid: "cpdlc-msg",
+      message: "ATC MESSAGE",
     });
     const audioManager = new AuralAlertRegistrationManager(
       this.props.gtcService.bus,
