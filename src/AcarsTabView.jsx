@@ -345,7 +345,7 @@ class StatusTab extends DisplayComponent {
             />
 
             <img src="coui://html_ui/garmin-3000-acars/assets/plane.png" />
-            <img src="coui://html_ui/garmin-3000-acars/assets/anntena.png" />
+            <img src="coui://html_ui/garmin-3000-acars/assets/antenna.png" />
             <img src="coui://html_ui/garmin-3000-acars/assets/tower.png" />
           </div>
           <span class={"acars-pane-padding"}>ATN Link Available</span>

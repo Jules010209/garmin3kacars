@@ -28,7 +28,7 @@ export const onMfdHomePage = (ctor, props, service) => {
     children: [
       <ImgTouchButton
         label={"ATC\nDatalink"}
-        imgSrc={"coui://html_ui/garmin-3000-acars/assets/tower.png"}
+        imgSrc={"coui://html_ui/garmin-3000-acars/assets/tower_dlk.png"}
         class={"gtc-directory-button"}
         onPressed={() => {
           service.changePageTo("CPDLC");
@@ -47,7 +47,7 @@ export const onSetupPageLiv2AirCj3 = (ctor, props, service) => {
       return (
         <ImgTouchButton
           label={"ATC\nDatalink"}
-          imgSrc={"coui://html_ui/garmin-3000-acars/assets/tower.png"}
+          imgSrc={"coui://html_ui/garmin-3000-acars/assets/tower_dlk.png"}
           class={"gtc-directory-button"}
           onPressed={() => {
             service.changePageTo("CPDLC");
@@ -150,7 +150,7 @@ class DataLinkSettingsButton extends DisplayComponent {
     return (
       <ImgTouchButton
         label={"Datalink\nSettings"}
-        imgSrc={"coui://html_ui/garmin-3000-acars/assets/tower.png"}
+        imgSrc={"coui://html_ui/garmin-3000-acars/assets/tower_dlk.png"}
         class={"gtc-directory-button"}
         onPressed={() => {
           this.props.service.openPopup("ACARS_SETTINGS");
